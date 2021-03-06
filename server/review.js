@@ -1,35 +1,5 @@
 const { gql } = require('apollo-server');
-
-const reviews = [
-  {
-    id: 0,
-    authorId: 0,
-    stars: 4,
-    productId: 1,
-    body: 'Pretty good',
-  },
-  {
-    id: 1,
-    authorId: 1,
-    stars: 1,
-    productId: 1,
-    body: 'Arf',
-  },
-  {
-    id: 2,
-    authorId: 1,
-    stars: 5,
-    productId: 2,
-    body: 'Arf arf',
-  },
-  {
-    id: 3,
-    authorId: 0,
-    stars: 2,
-    productId: 0,
-    body: 'Not bad',
-  },
-];
+const { products, reviews, users } = require('./data');
 
 const typeDefs = gql`
   extend type Query {
@@ -40,8 +10,8 @@ const typeDefs = gql`
 
   type Review {
     id: ID!
-    productId: ID!
-    authorId: ID!
+    product: Product!
+    author: User!
     stars: Int!
     body: String!
   }
@@ -53,6 +23,10 @@ const resolvers = {
     reviewsByAuthor: (_, { authorId }) =>
       reviews.filter(review => review.authorId === Number(authorId)),
     allReviews: () => reviews,
+  },
+  Review: {
+    product: ({ productId }) => products.find(p => p.id === productId),
+    author: ({ authorId }) => users.find(u => u.id === authorId),
   },
 };
 

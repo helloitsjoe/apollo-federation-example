@@ -1,17 +1,5 @@
 const { gql } = require('apollo-server');
-
-const users = [
-  {
-    id: 0,
-    name: 'Joe',
-    email: 'j@j.com',
-  },
-  {
-    id: 1,
-    name: 'Olive',
-    email: 'olive@j.com',
-  },
-];
+const { products, reviews, users } = require('./data');
 
 const typeDefs = gql`
   extend type Query {
@@ -23,6 +11,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     email: String!
+    reviews: [Review!]!
   }
 `;
 
